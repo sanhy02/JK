@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name = "SaveServlet", urlPatterns = {"/SaveServlet"})
-public class SaveServlet extends HttpServlet {
+public class ViewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +34,11 @@ public class SaveServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            //b1. Lấy giá trị tham số từ client
-            String uname = request.getParameter("uname");
-            String upass = request.getParameter("upass");
-            String uemail = request.getParameter("uemail");
-            String country = request.getParameter("country");
-            //b2. Xử lý yêu cầu ( truy cập CSDL để thêm mới user)
+            /* TODO output your page here. You may use following sample code. */
             Connection conn = null;
             PreparedStatement ps = null;
-
+            ResultSet rs = null;
+            String data="";
             try {
                 //1. nạp driver
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -53,11 +48,23 @@ public class SaveServlet extends HttpServlet {
                 //System.out.println("Ket noi ok");
                 //3.
                 ps = conn.prepareStatement("insert into users(name, password, email, country) values (?,?,?,?)");
-                ps.setString(1, uname);
-                ps.setString(2, upass);
-                ps.setString(3, uemail);
-                ps.setString(4, country);
-              
+               
+                
+                rs = ps.executeQuery();
+                
+                data += "<table>";
+                data +="<tr><th>Id</th></th>Name</th><th>Password</th><th>Email</th><th>Country</th><th>Edit</th><th>Delete</th></tr>";
+                while (rs.next()){
+                    data +="<tr>";
+                    data +="<td>" + rs.getInt(1) + "</td>";
+                    data +="<td>" + rs.getString(2) + "</td>";
+                    data +="<td>" + rs.getString(3) + "</td>";
+                    data +="<td>" + rs.getString(4) + "</td>";
+                    data +="<td>" + rs.getString(5) + "</td>";
+                    data +="<td><a href = EditServlet?id=" + rs.getInt(1) + ">Edit</a></td>";
+                    data +="<td><a href = DeleteServlet?id=" + rs.getInt(1) + ">Delete</a></td>";
+                }
+                data +="</table>";
                 //4. thi han truy vấn
                 int kq = ps.executeUpdate();
                 //5. Xử lý kết quả trả về
@@ -77,48 +84,26 @@ public class SaveServlet extends HttpServlet {
             //chèn nội dung của trang index.html vào phản hồi kết quả
             request.getRequestDispatcher("index.html").include(request, response);
 
-          
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "ViewServlet to display users";
+    }
+    
     
 
 }
