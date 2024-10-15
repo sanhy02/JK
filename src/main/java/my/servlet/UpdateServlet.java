@@ -53,7 +53,7 @@ public class UpdateServlet extends HttpServlet {
             try {
                 // Kết nối tới cơ sở dữ liệu
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=demodb", "sa", "sa");
+                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=dbo_user", "admin", "admin");
 
                 // Câu lệnh cập nhật
                 ps = conn.prepareStatement("UPDATE users SET name=?, password=?, email=?, country=? WHERE id=?");

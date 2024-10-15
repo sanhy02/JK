@@ -44,7 +44,7 @@ public class ViewServlet extends HttpServlet {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 //System.out.println("Nap Driver ok");
                 //2. thiết lập kết nối
-                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=demodb", "sa", "sa");
+                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=dbo_user", "admin", "admin");
                 //System.out.println("Ket noi ok");
                 //3.
                 ps = conn.prepareStatement("insert into users(name, password, email, country) values (?,?,?,?)");

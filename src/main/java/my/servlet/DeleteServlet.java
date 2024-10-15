@@ -42,7 +42,7 @@ public class DeleteServlet extends HttpServlet {
                 return;
             }
 
-            try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=demodb", "sa", "sa")) {
+            try (Connection conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=dbo_user", "admin", "admin")) {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 System.out.println("Driver ok");
 

@@ -59,7 +59,7 @@ public class EditServlet extends HttpServlet {
             try {
                 // Kết nối với cơ sở dữ liệu
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=demodb", "sa", "sa");
+                conn = DriverManager.getConnection("jdbc:sqlserver://MSI;databaseName=dbo_user", "admin", "admin");
 
                 // Tạo câu lệnh truy vấn
                 ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
